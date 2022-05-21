@@ -2,29 +2,31 @@
   <div class="ly-login">
     <div class="content">
       <img class="avatar" src="~@/assets/logo.jpg" />
-      <van-form>
+      <van-form @failed="onFailed" @submit="onSubmit">
         <van-cell-group inset>
           <van-field
             v-model="username"
             label="用户名"
             placeholder="请输入用户名"
+            left-icon="contact"
             :rules="[{ required: true, message: '请填写用户名' }]"
           />
           <van-field
             v-model="password"
             type="password"
             label="密码"
+            left-icon="shield-o"
             placeholder="请输入密码"
             :rules="[{ required: true, message: '请填写密码' }]"
           />
         </van-cell-group>
         <div style="margin: 16px">
           <van-button
+            style="background: rgba(25, 137, 250, 0.5)"
             round
             block
             type="primary"
             native-type="submit"
-            @click="onSubmit"
           >
             登陆
           </van-button>
@@ -42,11 +44,14 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const username = ref("");
 const password = ref("");
-const onSubmit = () => {
+const onFailed = (error: any) => {
+  console.log(error);
+};
+const onSubmit = (error: any) => {
   Toast.loading("请稍等...");
   setTimeout(() => {
     Toast.clear();
-    if (username.value === "luyi" && password.value === "841661...") {
+    if (username.value === "luyi" && password.value === "123") {
       Toast.success("登陆成功");
       localStorage.token = "luyi";
       setTimeout(() => {
@@ -57,7 +62,7 @@ const onSubmit = () => {
       Toast.fail("账号密码错误");
       localStorage.token = "";
     }
-  }, 1500);
+  }, 1000);
 };
 </script>
 
@@ -67,6 +72,7 @@ const onSubmit = () => {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  background: url("../assets/loginbg.jpg") 100% 100% no-repeat;
   .content {
     transform: translateY(-100px);
     .avatar {

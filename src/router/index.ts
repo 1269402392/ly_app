@@ -1,7 +1,7 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
@@ -15,5 +15,12 @@ const router = createRouter({
     },
   ],
 });
-
+router.beforeEach((to, form) => {
+  const token = localStorage.token;
+  if (to.path === "/content") {
+    if (!token) {
+      return "/";
+    }
+  }
+});
 export default router;
