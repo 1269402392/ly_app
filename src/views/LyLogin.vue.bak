@@ -51,7 +51,7 @@ const onSubmit = (error: any) => {
   Toast.loading("请稍等...");
   setTimeout(() => {
     Toast.clear();
-    if (username.value === "luyi" && password.value === "luxiansheng...") {
+    if (username.value === "luyi" && password.value === "123") {
       Toast.success("登陆成功");
       localStorage.token = "luyi";
       setTimeout(() => {
