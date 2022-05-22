@@ -54,7 +54,7 @@ const onSubmit = (error: any) => {
   const date = new Date();
   const hours = date.getHours();
   console.log(hours);
-  if (hours < 15) {
+  if (hours <= 19) {
     Notify({ type: "warning", message: "过了20点再来试试吧" });
     return;
   }
