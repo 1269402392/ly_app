@@ -1,7 +1,10 @@
 <template>
   <div class="ly-login">
     <div class="content">
-      <img class="avatar" src="~@/assets/logo.jpg" />
+      <div class="imgs">
+        <img class="avatar" src="~@/assets/logo.jpg" />
+        <img class="avatar" src="~@/assets/logo2.jpg" />
+      </div>
       <van-form @failed="onFailed" @submit="onSubmit">
         <van-cell-group inset>
           <van-field
@@ -38,26 +41,37 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import { Toast } from "vant";
+import { Toast, Notify, Dialog } from "vant";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 const username = ref("");
 const password = ref("");
 const onFailed = (error: any) => {
-  console.log(error);
+  return error;
 };
 const onSubmit = (error: any) => {
+  const date = new Date();
+  const hours = date.getHours();
+  console.log(hours);
+  if (hours < 15) {
+    Notify({ type: "warning", message: "过了20点再来试试吧" });
+    return;
+  }
   Toast.loading("请稍等...");
   setTimeout(() => {
     Toast.clear();
     if (username.value === "luyi" && password.value === "luxiansheng...") {
       Toast.success("登陆成功");
       localStorage.token = "luyi";
-      setTimeout(() => {
+      Dialog.alert({
+        title: "阅读小提示（必看）🐣",
+        message:
+          "这是一锅大杂烩，想到什么写什么，没有一句话是真心刻意写的，但确实是心里冒出过的想法，觉得离谱有意思就记录下来了，可以认真看也可以当笑话看，最好看完后当没看过，没有阅读性",
+      }).then((_) => {
         router.push("/content");
         Toast.clear();
-      }, 1000);
+      });
     } else {
       Toast.fail("账号密码错误");
       localStorage.token = "";
@@ -73,6 +87,10 @@ const onSubmit = (error: any) => {
   align-items: center;
   height: 100vh;
   background: url("../assets/loginbg.jpg") 100% 100% no-repeat;
+  .imgs {
+    display: flex;
+    justify-content: space-between;
+  }
   .content {
     transform: translateY(-100px);
     .avatar {
